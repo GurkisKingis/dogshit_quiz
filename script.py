@@ -1,4 +1,4 @@
-# variables and class(es)
+# Declaring variables and class(es)
 round_number = 0
 questions = []
 answers = []
@@ -119,6 +119,7 @@ You got {number} of {total} questions correct!
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """.format(number=number_correct, total=len(questions)))
+    
     if number_correct < len(questions):
         print("\nYou answered these questions incorrectly: ")
         for i in range(len(questions_answered_wrongly)):
@@ -139,4 +140,3 @@ You got {number} of {total} questions correct!
         choose_to_play = False
         print("\nYou got every question correct! Well done!")
         print("Thanks for playing!")
-
