@@ -18,8 +18,6 @@ def generate_hint(word):
             new_word += word[i]
         if i % 2 == 0:
             new_word += word[i]
-        else:
-            new_word += "_"
     if new_word[-1] != word[-1]:
         new_word += word[-1]
     return new_word
@@ -56,6 +54,8 @@ qs10 = Question("What is the name of the protagonist in the TOMB RAIDER video ga
 
 
 # Program starts
+#print(hints)
+
 print(
     """
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -99,7 +99,6 @@ while choose_to_play:
     for i in range(len(questions)):
         round_number += 1
         print("\nQUESTION {number}: {question}".format(number=round_number, question=questions[i]))
-        print("What is your answer?")
         user_answer = input("Type here: ").lower()
         if user_answer == answers[i].lower():
             number_correct += 1
@@ -137,10 +136,4 @@ You got {number} of {total} questions correct!
     # If no, end the game while loop
     if play_choice == "n":
         choose_to_play = False
-
-
-
-
-
-
 
