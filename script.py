@@ -98,7 +98,7 @@ while choose_to_play:
 
     for i in range(len(questions)):
         round_number += 1
-        print("\nQUESTION {number}: {question}".format(number=round_number, question=questions[i]))
+        print("\nQUESTION {number} of {total}: {question}".format(number=round_number, total=len(questions), question=questions[i]))
         user_answer = input("Type here: ").lower()
         if user_answer == answers[i].lower():
             number_correct += 1
@@ -124,16 +124,19 @@ You got {number} of {total} questions correct!
         for i in range(len(questions_answered_wrongly)):
             print("\n{question}".format(question=questions_answered_wrongly[i]))
             print("You answered: {answer}".format(answer=wrong_user_answers[i]))
-            print("\nHere's a hint: {hint}".format(hint=hints_for_wrong_questions[i]))
+            print("Here's a hint: {hint}".format(hint=hints_for_wrong_questions[i]))
         print("\nPlay again if you think you know the answers!")
+
+        play_choice = input("\nWould you like to play again? y/n: ").lower()
+        # Make sure not to progress unless user presses y or n
+        while play_choice != "y" and play_choice != "n":
+            play_choice = input("Please press y or n: ")
+        # If no, end the game while loop
+        if play_choice == "n":
+            choose_to_play = False
+            print("\nThanks for playing!")
     else:
-        print("\nYou got every question correct! Well done!")
-    
-    play_choice = input("Would you like to play again? y/n: ").lower()
-    # Make sure not to progress unless user presses y or n
-    while play_choice != "y" and play_choice != "n":
-        play_choice = input("Please press y or n: ")
-    # If no, end the game while loop
-    if play_choice == "n":
         choose_to_play = False
+        print("\nYou got every question correct! Well done!")
+        print("Thanks for playing!")
 
