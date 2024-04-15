@@ -1,3 +1,5 @@
+import csv
+
 # Declaring variables and class(es)
 round_number = 0
 questions = []
@@ -11,51 +13,20 @@ hints_for_wrong_questions = []
 number_correct = 0
 choose_to_play = True
 
-def generate_hint(word):
-    new_word = ""
-    for i in range(len(word)):
-        if word[i] == " ":
-            new_word += word[i]
-        if i % 2 == 0:
-            new_word += word[i]
-    if new_word[-1] != word[-1]:
-        new_word += word[-1]
-    return new_word
+with open("C:/Users/grvmn/Documents/Codecademy Projects/Terminal Game/questions_answers_hints.csv") as csv_file:
+    reader = csv.reader(csv_file)
+    next(reader)
+    for row in reader:
+        questions.append(row[0])
+        answers.append(row[1])
+        hints.append(row[2])
 
-
-class Question:
-    question_counter = 0
-
-    def __init__(self, question="Question", answer="Answer"):
-        self.question = question
-        self.answer = answer
-        self.id = Question.question_counter
-        Question.question_counter += 1
-
-        questions.append(self.question)
-        answers.append(self.answer)
-        self.hint = generate_hint(answer)
-        hints.append(self.hint)
-
-
-
-# Creating the questions
-qs1 = Question("What is the name of the protagonist in the mainline HALO video games?", "Master Chief")
-qs2 = Question("What is the title of the second book in the A SONG OF ICE AND FIRE series of novels?", "A Clash of Kings")
-qs3 = Question("Who composed the music for the video game THE ELDER SCROLLS: SKYRIM?", "Jeremy Soule")
-qs4 = Question("The English, Norwegian, and Dutch languages are part of what language family?", "Germanic")
-qs5 = Question("In Physics, what is the name of the force that causes attraction between objects that have mass?", "Gravity")
-qs6 = Question("What is the capital of Sweden?", "Stockholm")
-qs7 = Question("In the video game DEEP ROCK GALACTIC, what is the name of the dwarves' robotic companion on solo missions?", "Bosco")
-qs8 = Question("What is the surname of the character Dominic in the video game GEARS OF WAR?", "Santiago")
-qs9 = Question("In the original HALO video games, what is the name of the parasitic threat that aims to consume all life in the galaxy?", "The Flood")
-qs10 = Question("What is the name of the protagonist in the TOMB RAIDER video games?", "Lara Croft")
-
+print(questions)
+print(answers)
+print(hints)
 
 
 # Program starts
-#print(hints)
-
 print(
     """
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
