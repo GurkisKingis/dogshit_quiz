@@ -1,61 +1,9 @@
+import csv
+
 # Declaring variables and class(es)
-round_number = 0
-questions = []
-answers = []
-hints = []
-
-questions_answered_wrongly = []
-wrong_user_answers = []
-hints_for_wrong_questions = []
-
-number_correct = 0
 choose_to_play = True
 
-def generate_hint(word):
-    new_word = ""
-    for i in range(len(word)):
-        if word[i] == " ":
-            new_word += word[i]
-        if i % 2 == 0:
-            new_word += word[i]
-    if new_word[-1] != word[-1]:
-        new_word += word[-1]
-    return new_word
-
-
-class Question:
-    question_counter = 0
-
-    def __init__(self, question="Question", answer="Answer"):
-        self.question = question
-        self.answer = answer
-        self.id = Question.question_counter
-        Question.question_counter += 1
-
-        questions.append(self.question)
-        answers.append(self.answer)
-        self.hint = generate_hint(answer)
-        hints.append(self.hint)
-
-
-
-# Creating the questions
-qs1 = Question("What is the name of the protagonist in the mainline HALO video games?", "Master Chief")
-qs2 = Question("What is the title of the second book in the A SONG OF ICE AND FIRE series of novels?", "A Clash of Kings")
-qs3 = Question("Who composed the music for the video game THE ELDER SCROLLS: SKYRIM?", "Jeremy Soule")
-qs4 = Question("The English, Norwegian, and Dutch languages are part of what language family?", "Germanic")
-qs5 = Question("In Physics, what is the name of the force that causes attraction between objects that have mass?", "Gravity")
-qs6 = Question("What is the capital of Sweden?", "Stockholm")
-qs7 = Question("In the video game DEEP ROCK GALACTIC, what is the name of the dwarves' robotic companion on solo missions?", "Bosco")
-qs8 = Question("What is the surname of the character Dominic in the video game GEARS OF WAR?", "Santiago")
-qs9 = Question("In the original HALO video games, what is the name of the parasitic threat that aims to consume all life in the galaxy?", "The Flood")
-qs10 = Question("What is the name of the protagonist in the TOMB RAIDER video games?", "Lara Croft")
-
-
-
 # Program starts
-#print(hints)
-
 print(
     """
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -89,12 +37,36 @@ while play_choice != "y" and play_choice != "n":
 if play_choice == "n":
     choose_to_play = False
     print("Well, you're no fun... :(")
-# Start the game while loop
+
+# Start the main game while loop
 while choose_to_play:
     print("Let's begin!")
 
-    # Set this to zero here so that on repeat it doesn't keep increasing past the last round number
+    # Set these to zero here so that on repeat they don't keep increasing
     round_number = 0
+    questions = []
+    answers = []
+    hints = []
+    questions_answered_wrongly = []
+    wrong_user_answers = []
+    hints_for_wrong_questions = []
+    number_correct = 0
+
+    # Let the user choose which set of questions to answer
+    # Update to compare input to a list of strings based on how many csv files there are?
+    chosen_set = input("Which set of questions would you like to try? Type 1, 2, or 3: ")
+    while chosen_set != "1" and chosen_set != "2" and chosen_set != "3":
+        chosen_set = input("Please type 1, 2, or 3: ")
+    chosen_set.strip('"')
+
+    # Take questions, answers, hints from CSV file and append to respective lists
+    with open("set{set_number}.csv".format(set_number=chosen_set)) as csv_file:
+        reader = csv.reader(csv_file)
+        next(reader)
+        for row in reader:
+            questions.append(row[0])
+            answers.append(row[1])
+            hints.append(row[2])
 
     for i in range(len(questions)):
         round_number += 1
@@ -102,7 +74,7 @@ while choose_to_play:
         user_answer = input("Type here: ").lower()
         if user_answer == answers[i].lower():
             number_correct += 1
-        else:
+        else: # Add incorrect question, answer, hint to "incorrect" lists for post-game summary
             questions_answered_wrongly.append(questions[i])
             wrong_user_answers.append(user_answer)
             hints_for_wrong_questions.append(hints[i])
@@ -120,6 +92,7 @@ You got {number} of {total} questions correct!
 
 """.format(number=number_correct, total=len(questions)))
     
+    # If there were any incorrect answers:
     if number_correct < len(questions):
         print("\nYou answered these questions incorrectly: ")
         for i in range(len(questions_answered_wrongly)):
@@ -136,7 +109,14 @@ You got {number} of {total} questions correct!
         if play_choice == "n":
             choose_to_play = False
             print("\nThanks for playing!")
+    # If every answer was correct:
     else:
-        choose_to_play = False
         print("\nYou got every question correct! Well done!")
-        print("Thanks for playing!")
+        play_choice = input("\nWould you like to play again? y/n: ").lower()
+        # Make sure not to progress unless user presses y or n
+        while play_choice != "y" and play_choice != "n":
+            play_choice = input("Please press y or n: ")
+        # If no, end the game while loop
+        if play_choice == "n":
+            choose_to_play = False
+            print("\nThanks for playing!")
