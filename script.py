@@ -37,10 +37,13 @@ while play_choice != "y" and play_choice != "n":
 if play_choice == "n":
     choose_to_play = False
     print("Well, you're no fun... :(")
-# Start the game while loop
+
+# Start the main game while loop
 while choose_to_play:
     print("Let's begin!")
 
+    # Set these to zero here so that on repeat they don't keep increasing
+    round_number = 0
     questions = []
     answers = []
     hints = []
@@ -49,11 +52,14 @@ while choose_to_play:
     hints_for_wrong_questions = []
     number_correct = 0
 
+    # Let the user choose which set of questions to answer
+    # Update to compare input to a list of strings based on how many csv files there are?
     chosen_set = input("Which set of questions would you like to try? Type 1, 2, or 3: ")
     while chosen_set != "1" and chosen_set != "2" and chosen_set != "3":
         chosen_set = input("Please type 1, 2, or 3: ")
     chosen_set.strip('"')
 
+    # Take questions, answers, hints from CSV file and append to respective lists
     with open("set{set_number}.csv".format(set_number=chosen_set)) as csv_file:
         reader = csv.reader(csv_file)
         next(reader)
@@ -62,16 +68,13 @@ while choose_to_play:
             answers.append(row[1])
             hints.append(row[2])
 
-    # Set these to zero here so that on repeat they don't keep increasing
-    round_number = 0
-
     for i in range(len(questions)):
         round_number += 1
         print("\nQUESTION {number} of {total}: {question}".format(number=round_number, total=len(questions), question=questions[i]))
         user_answer = input("Type here: ").lower()
         if user_answer == answers[i].lower():
             number_correct += 1
-        else:
+        else: # Add incorrect question, answer, hint to "incorrect" lists for post-game summary
             questions_answered_wrongly.append(questions[i])
             wrong_user_answers.append(user_answer)
             hints_for_wrong_questions.append(hints[i])
@@ -89,6 +92,7 @@ You got {number} of {total} questions correct!
 
 """.format(number=number_correct, total=len(questions)))
     
+    # If there were any incorrect answers:
     if number_correct < len(questions):
         print("\nYou answered these questions incorrectly: ")
         for i in range(len(questions_answered_wrongly)):
@@ -105,6 +109,7 @@ You got {number} of {total} questions correct!
         if play_choice == "n":
             choose_to_play = False
             print("\nThanks for playing!")
+    # If every answer was correct:
     else:
         print("\nYou got every question correct! Well done!")
         play_choice = input("\nWould you like to play again? y/n: ").lower()
