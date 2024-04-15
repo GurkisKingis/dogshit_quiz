@@ -13,7 +13,7 @@ hints_for_wrong_questions = []
 number_correct = 0
 choose_to_play = True
 
-with open("C:/Users/grvmn/Documents/Codecademy Projects/Terminal Game/questions_answers_hints.csv") as csv_file:
+with open("questions_answers_hints.csv") as csv_file:
     reader = csv.reader(csv_file)
     next(reader)
     for row in reader:
