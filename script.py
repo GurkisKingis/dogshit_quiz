@@ -54,7 +54,7 @@ while choose_to_play:
 
     # Take questions, answers, hints from CSV file and append to respective lists
     with open("set{set_number}.csv".format(set_number=chosen_set)) as csv_file:
-        reader = csv.reader(csv_file)
+        reader = csv.reader(csv_file, delimiter=";")
         next(reader)
         for row in reader:
             questions.append(row[0])
