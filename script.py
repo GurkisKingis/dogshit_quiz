@@ -1,30 +1,7 @@
 import csv
 
 # Declaring variables and class(es)
-round_number = 0
-questions = []
-answers = []
-hints = []
-
-questions_answered_wrongly = []
-wrong_user_answers = []
-hints_for_wrong_questions = []
-
-number_correct = 0
 choose_to_play = True
-
-with open("questions_answers_hints.csv") as csv_file:
-    reader = csv.reader(csv_file)
-    next(reader)
-    for row in reader:
-        questions.append(row[0])
-        answers.append(row[1])
-        hints.append(row[2])
-
-print(questions)
-print(answers)
-print(hints)
-
 
 # Program starts
 print(
@@ -64,7 +41,28 @@ if play_choice == "n":
 while choose_to_play:
     print("Let's begin!")
 
-    # Set this to zero here so that on repeat it doesn't keep increasing past the last round number
+    questions = []
+    answers = []
+    hints = []
+    questions_answered_wrongly = []
+    wrong_user_answers = []
+    hints_for_wrong_questions = []
+    number_correct = 0
+
+    chosen_set = input("Which set of questions would you like to try? Type 1, 2, or 3: ")
+    while chosen_set != "1" and chosen_set != "2" and chosen_set != "3":
+        chosen_set = input("Please type 1, 2, or 3: ")
+    chosen_set.strip('"')
+
+    with open("set{set_number}.csv".format(set_number=chosen_set)) as csv_file:
+        reader = csv.reader(csv_file)
+        next(reader)
+        for row in reader:
+            questions.append(row[0])
+            answers.append(row[1])
+            hints.append(row[2])
+
+    # Set these to zero here so that on repeat they don't keep increasing
     round_number = 0
 
     for i in range(len(questions)):
@@ -108,6 +106,12 @@ You got {number} of {total} questions correct!
             choose_to_play = False
             print("\nThanks for playing!")
     else:
-        choose_to_play = False
         print("\nYou got every question correct! Well done!")
-        print("Thanks for playing!")
+        play_choice = input("\nWould you like to play again? y/n: ").lower()
+        # Make sure not to progress unless user presses y or n
+        while play_choice != "y" and play_choice != "n":
+            play_choice = input("Please press y or n: ")
+        # If no, end the game while loop
+        if play_choice == "n":
+            choose_to_play = False
+            print("\nThanks for playing!")
